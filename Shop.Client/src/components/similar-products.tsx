@@ -1,32 +1,42 @@
-import { SIMILAR_PRODUCTS, DATA } from "../mock-data";
+import { useDispatch, useSelector } from "react-redux";
 import { ProductBaseData } from "../types";
-import { findRelatedIds } from "../utils";
-import Card from "./card";
+import { AppDispatch, RootState } from "../app/store";
+import { useEffect } from "react";
+import { loadSimilarProducts } from "../app/dataSlice";
+import SimilarCard from "./similar-card";
+import Loading from "./loading";
 
-type SimilarProps = {
-    product: ProductBaseData;
+type SimilarProductsProps = {
+    similarProduct: ProductBaseData;
 }
 
-export default function SimilarProducts({ product }: SimilarProps): JSX.Element {
-    if (!product.id) {
-        return <div>Похожие товары отсутствуют</div>;
-    }
+export default function SimilarProducts({ similarProduct }: SimilarProductsProps): JSX.Element {
+    const dispatch = useDispatch<AppDispatch>();
+    const similarProducts = useSelector((state: RootState) => state.similarProducts.similarProducts);
+    const isLoading = useSelector((state: RootState) => state.similarProducts.loading);
 
-    const similarProductsIds: string[] = findRelatedIds(SIMILAR_PRODUCTS, product.id);
-    const similarProducts: ProductBaseData[] = DATA.filter((product) => similarProductsIds.includes(product.id));
+    useEffect(() => {
+        dispatch(loadSimilarProducts(similarProduct.id));
+    }, [similarProduct.id, dispatch]);
 
     return (
-        <div>
-            {similarProducts && similarProducts.length > 0 && (
-                <div className="similar">
-                    <h2 className="product_name">Похожие товары</h2>
-                    <ul className="products_list">
-                        {similarProducts.map((product) => (
-                            <Card product={product} key={product.id}/>
-                        ))}
-                    </ul>
-                </div>
-            )}
-        </div>
+        isLoading ? (
+            <Loading />
+        ) : (
+            <div>
+                {similarProducts && similarProducts.length > 0 ? (
+                    <div className="similar">
+                        <h2 className="product_name">Похожие товары</h2>
+                        <ul className="similar-products_list">
+                            {similarProducts.map((product) => (
+                                <SimilarCard similarProduct={product} key={product.id} />
+                            ))}
+                        </ul>
+                    </div>
+                ) : (
+                    <div>Похожие товары отсутствуют</div>
+                )}
+            </div>
+        )
     );
 }

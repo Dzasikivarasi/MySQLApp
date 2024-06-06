@@ -4,20 +4,18 @@ import { ProductBaseData } from "../types";
 type SortingProps = {
     sortedProducts: ProductBaseData[];
     updateProducts: (products: ProductBaseData[]) => void;
-  };
+};
 
-export default function Sorting({sortedProducts, updateProducts}:SortingProps): JSX.Element {
+export default function Sorting({ sortedProducts, updateProducts }: SortingProps): JSX.Element {
 
     const onButtonClick = (sortOption: string): void => {
         let products = sortedProducts;
         switch (sortOption) {
             case "title":
                 products = [...products].sort((a, b) => a.title.localeCompare(b.title));
-                console.log('отсортировался по названию')
                 break;
             case "price":
                 products = [...products].sort((a, b) => a.price - b.price);
-                console.log('отсортировался по цене')
                 break;
             default:
                 return;

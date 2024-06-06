@@ -18,7 +18,5 @@ export async function initDataBase(): Promise<Connection | null> {
     return null;
   }
 
-  console.log(`Connection to DB ${DB_NAME} established`);
-
   return connection;
 }

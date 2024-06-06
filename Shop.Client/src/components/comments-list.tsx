@@ -1,12 +1,10 @@
 import { ProductBaseData } from "../types";
 
-
 type CommentsProps = {
     product?: ProductBaseData;
 }
 
 export default function CommentsList({ product }: CommentsProps): JSX.Element {
-
     return (
         <ul className="comments_list">
 

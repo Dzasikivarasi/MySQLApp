@@ -22,3 +22,10 @@ export type ProductComments = {
   email: string;
   body: string;
 }
+
+export type SimilarProductsType = {
+  id: string;
+  title: string;
+  description: string;
+  price: string
+}

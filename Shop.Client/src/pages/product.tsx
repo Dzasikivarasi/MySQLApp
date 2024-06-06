@@ -1,16 +1,18 @@
 import { useEffect } from "react";
 import CommentsList from "../components/comments-list";
-import SimilarProduct from "../components/similar-products";
 import { useNavigate, useParams } from "react-router-dom";
-import { DATA } from "../mock-data";
 import { formatNumber } from "../utils";
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
+import SimilarProducts from "../components/similar-products";
 
 export default function Product(): JSX.Element {
     const params = useParams();
     const navigate = useNavigate();
+    const data = useSelector((state: RootState) => state.products.data);
 
     const { id } = params;
-    const product = DATA.find((product) => product.id === id);
+    const product = data.find((product) => product.id === id);
 
     useEffect(() => {
         if (!product) {
@@ -25,7 +27,7 @@ export default function Product(): JSX.Element {
     return (
         <>
             <div className="product">
-                <img className="product_photo" src={product && product.thumbnail?.url || "../../public/img/placeholder.jpg"} alt="Фото товара" />
+                <img className="product_photo" src={product && product.thumbnail?.url || `/img/placeholder.jpg`} alt="Фото товара" />
                 <div className="product_right">
                     <h1 className="product_name">{product?.title}</h1>
                     <p className="product_description">{product?.description}</p>
@@ -38,7 +40,7 @@ export default function Product(): JSX.Element {
                 </div>
             </div>
 
-            <SimilarProduct product={product} />
+            <SimilarProducts similarProduct={product} />
 
             <div className="comments">
 

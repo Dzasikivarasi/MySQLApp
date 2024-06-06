@@ -9,7 +9,7 @@ export default function Main(): JSX.Element {
     };
 
     const onAdminButtonClick = (): void => {
-
+        window.open('/admin', '_blank');
     };
 
     return (
