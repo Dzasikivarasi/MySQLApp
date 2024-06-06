@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { ProductBaseData, SimilarProductsType } from "../types";
+import { DATA_LOAD_ERROR } from "../const";
 
 export type InitialStateProductType = {
     data: ProductBaseData[];
@@ -34,7 +35,7 @@ export const loadProducts = createAsyncThunk(
             const response = await axios.get(`${API_HOST}/products`);
             return response.data;
         } catch (error) {
-            throw Error("Ошибка при загрузке данных");
+            throw Error(DATA_LOAD_ERROR);
         }
     }
 );
@@ -55,7 +56,7 @@ export const productsSlice = createSlice({
         });
         builder.addCase(loadProducts.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.error.message || "Ошибка при загрузке данных";
+            state.error = action.error.message || DATA_LOAD_ERROR;
         });
     },
 });
@@ -69,7 +70,7 @@ export const loadSimilarProducts = createAsyncThunk(
             const response = await axios.get(`${API_HOST}/products/similar/${productId}`);
             return response.data;
         } catch (error) {
-            throw Error("Ошибка при загрузке похожих товаров");
+            throw Error(DATA_LOAD_ERROR);
         }
     }
 );
@@ -90,7 +91,7 @@ export const similarProductsSlice = createSlice({
         });
         builder.addCase(loadSimilarProducts.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.error.message || "Ошибка при загрузке похожих товаров";
+            state.error = action.error.message || DATA_LOAD_ERROR;
         });
     },
 });
